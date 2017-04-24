@@ -16,7 +16,11 @@ DIContainer.get<IBar>(); // Retrieves a concrete instance of the IBar service.
 
 ## Changelog:
 
-**v1.0**:
+**v1.0.1**:
+
+- Fixed a bug where 'hasAltered' would always be false. Cleanup. Added typings to .gitignore and .npmignore.
+
+**v1.0.0**:
 
 - First release.
 

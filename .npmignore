@@ -4,3 +4,4 @@ tsconfig.*
 /test/
 /compiled/
 .idea
+/typings/

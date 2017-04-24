@@ -68,10 +68,7 @@ export class Compiler implements ICompiler {
 		// Updates all expressions.
 		this.serviceExpressionUpdater.update({codeContainer, expressions, classes: Compiler.classes, mappedInterfaces: Compiler.mappedInterfaces});
 
-		return {
-			hasAltered: false,
-			code: codeContainer.code
-		}
+		return codeContainer;
 	}
 
 	/**
