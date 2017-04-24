@@ -3,7 +3,7 @@ export interface IHasAlteredable {
 }
 
 export interface ICodeable {
-	code: MagicString;
+	code: any;
 }
 
 export interface ICompilerResult extends ICodeable, IHasAlteredable {
