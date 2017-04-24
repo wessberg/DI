@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "typeRoots": [ "./node_modules/@types", "./node_modules/typescript/lib" ],
+    "alwaysStrict": true,
+    "emitDecoratorMetadata": false,
+    "importHelpers": true,
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "strictNullChecks": true,
+    "module": "es2015",
+    "noImplicitAny": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "target": "es2017",
+    "outDir": "compiled",
+    "lib": [
+      "es2015.promise",
+      "dom",
+      "es6",
+      "scripthost",
+      "es7",
+      "es2017.object",
+      "es2015.proxy"
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "tslib" : ["node_modules/tslib/tslib.d.ts"],
+      "magic-string": ["typings/magic-string/index.d.ts"]
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "name": "@wessberg/di",
+  "version": "1.0.0",
+  "description": "A Dependency-Injection container that holds services and can produce instances of them as required. It mimics reflection by parsing the app at compile-time and supporting the generic-reflection syntax.",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/es2015/index.js",
+  "browser": "./dist/es2015/index.js",
+  "types": "./dist/es2015/index.d.ts",
+  "typings": "./dist/es2015/index.d.ts",
+  "scripts": {
+    "build:pre": "mkdir -p dist/cjs/interface && mkdir -p dist/es2015/interface",
+    "build:cjs": "tsc --module commonjs --outDir dist/cjs -p tsconfig.dist.json",
+    "build:es2015": "tsc --module es2015 --outDir dist/es2015 -p tsconfig.dist.json",
+    "build": "npm run build:pre && npm run build:cjs && npm run build:es2015",
+    "test:pre": "tsc --module commonjs --target es2017 --sourceMap",
+    "test": "NODE_ENV=TEST npm run test:pre && ava --verbose"
+  },
+  "keywords": [
+    "DI",
+    "dependency injection",
+    "ioc",
+    "inversion",
+    "service",
+    "container",
+    "newable",
+    "reflection",
+    "singleton",
+    "transient"
+  ],
+  "author": "Frederik Wessberg",
+  "license": "MIT",
+  "devDependencies": {
+    "ava": "^0.19.1",
+    "typescript": "2.3.0"
+  },
+  "dependencies": {
+    "@wessberg/globalobject": "^1.0.0",
+    "@wessberg/simplelanguageservice": "^1.0.8",
+    "magic-string": "^0.19.0",
+    "tslib": "^1.6.1"
+  }
+}
