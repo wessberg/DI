@@ -1,5 +1,5 @@
 import {IServiceExpressionFinder, IServiceExpressionFinderFindMethodOptions} from "./Interface/IServiceExpressionFinder";
-import {IPropertyCallExpression} from "@wessberg/simplelanguageservice";
+import {ICallExpression} from "@wessberg/codeanalyzer";
 
 /**
  * Finds all expressions in the given statements related to the DIContainer.
@@ -9,27 +9,29 @@ export class ServiceExpressionFinder implements IServiceExpressionFinder {
 
 	/**
 	 * Traverses the AST and extracts all CallExpressions that has to do with the DIContainer.
-	 * @param {LanguageService} host
-	 * @param {NodeArray<Statement>} statements
+	 * @param host
+	 * @param statements
 	 * @param {Set<string>} identifiers
 	 * @param {string} filepath
-	 * @returns {IPropertyCallExpression[]}
+	 * @returns {ICallExpression[]}
 	 */
-	public find ({host, statements, identifiers, filepath}: IServiceExpressionFinderFindMethodOptions): IPropertyCallExpression[] {
-		const expressions = host.getPropertyCallExpressions(statements);
-		return expressions.filter(exp => identifiers.has(this.assertNoArguments(exp, filepath).property));
+	public find ({host, statements, identifiers, filepath}: IServiceExpressionFinderFindMethodOptions): ICallExpression[] {
+		const expressions = host.getCallExpressions(statements);
+		return expressions.filter(exp => {
+			this.assertNoArguments(exp, filepath).property;
+			return exp.property != null && identifiers.has(exp.property.toString());
+		});
 	}
 
-	private assertNoArguments (expression: IPropertyCallExpression, filepath: string): IPropertyCallExpression {
-		if (expression.args.length === 0) return expression;
+	private assertNoArguments (expression: ICallExpression, filepath: string): ICallExpression {
+		if (expression.arguments.argumentsList.length === 0) return expression;
+		const formattedExpression = `${expression.property}.${expression.identifier}<${expression.type.flattened}>(${expression.arguments.argumentsList.map(arg => arg.value.hasDoneFirstResolve() ? arg.value.resolved : arg.value.resolve()).join(", ")})`;
 
-		const formattedExpression = `${expression.property}.${expression.method}<${expression.typeArguments.join(", ")}>(${expression.args.map(arg => arg.value).join(", ")})`;
-
-		if (expression.typeArguments.length < 2) {
+		if (expression.type.bindings == null || expression.type.bindings.length < 2) {
 			throw new TypeError(`Found an issue in ${filepath}: You must pass an implementation as the second generic type parameter here: ${formattedExpression}`);
 		}
 
-		if (expression.args.length > 0) {
+		if (expression.arguments.argumentsList.length > 0) {
 			throw new TypeError(`Found an issue in ${filepath}: You shouldn't pass any arguments here: ${formattedExpression}. Instead, let the compiler do it for you.`);
 		}
 		return expression;

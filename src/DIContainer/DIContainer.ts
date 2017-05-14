@@ -12,7 +12,8 @@ export class DIServiceContainer implements IDIContainer {
 	private serviceRegistry: Map<string, IRegistrationRecord<{}>> = new Map();
 	private instances: Map<string, any> = new Map();
 
-	constructor (private config: IDIConfig) {}
+	constructor (private config: IDIConfig) {
+	}
 
 	/**
 	 * Registers a service that will be instantiated once in the application lifecycle. All requests
@@ -68,7 +69,7 @@ export class DIServiceContainer implements IDIContainer {
 	 * @param {string} identifier
 	 * @returns {T|null}
 	 */
-	private getInstance<T> (identifier: string): T | null {
+	private getInstance<T> (identifier: string): T|null {
 		const instance = this.instances.get(identifier);
 		return instance == null ? null : instance;
 	}

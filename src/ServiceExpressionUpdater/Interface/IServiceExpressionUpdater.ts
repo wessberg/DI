@@ -1,17 +1,17 @@
 import {ICompilerResult} from "../../Compiler/Interface/ICompiler";
-import {IClassDeclaration, IPropertyCallExpression} from "@wessberg/simplelanguageservice";
+import {ClassIndexer, ICallExpression} from "@wessberg/codeanalyzer";
 
 export interface IServiceExpressionUpdaterUpdateMethodOptions {
 	codeContainer: ICompilerResult;
-	expressions: IPropertyCallExpression[];
-	classes: Map<string, IClassDeclaration>;
+	expressions: ICallExpression[];
+	classes: ClassIndexer;
 	mappedInterfaces: IMappedInterfaceToImplementationMap;
 }
 
 export interface IServiceExpressionUpdaterRegisterExpressionHandlerOptions {
 	codeContainer: ICompilerResult;
-	expression: IPropertyCallExpression;
-	classes: Map<string, IClassDeclaration>;
+	expression: ICallExpression;
+	classes: ClassIndexer;
 }
 
 export interface IMappedInterfaceToImplementationMap {

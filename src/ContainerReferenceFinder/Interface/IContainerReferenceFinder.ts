@@ -1,10 +1,9 @@
-import {ISimpleLanguageService} from "@wessberg/simplelanguageservice";
+import {ICodeAnalyzer} from "@wessberg/codeanalyzer";
 import {NodeArray, Statement} from "typescript";
 
 export interface IContainerReferenceFinderFindMethodOptions {
-	host: ISimpleLanguageService;
+	host: ICodeAnalyzer;
 	statements: NodeArray<Statement>;
-	filepath: string;
 }
 
 export interface IContainerReferenceFinder {

@@ -1,17 +1,17 @@
 import {Marshaller} from "@wessberg/marshaller";
-import {SimpleLanguageService} from "@wessberg/simplelanguageservice";
+import {CodeAnalyzer} from "@wessberg/codeanalyzer";
 import {TypeDetector} from "@wessberg/typedetector";
-import MagicString from "magic-string";
+import * as MagicString from "magic-string";
 import * as ts from "typescript";
 import {ClassConstructorArgumentsStringifier} from "./ClassConstructorArgumentsStringifier/ClassConstructorArgumentsStringifier";
 import {ClassConstructorArgumentsValidator} from "./ClassConstructorArgumentsValidator/ClassConstructorArgumentsValidator";
-import {ClassDeclarationBuilder} from "./ClassDeclarationBuilder/ClassDeclarationBuilder";
 import {Compiler} from "./Compiler/Compiler";
 import {ICompilerResult, IHasAlteredable} from "./Compiler/Interface/ICompiler";
 import {ContainerReferenceFinder} from "./ContainerReferenceFinder/ContainerReferenceFinder";
 import {DIConfig} from "./DIConfig/DIConfig";
 import {ServiceExpressionFinder} from "./ServiceExpressionFinder/ServiceExpressionFinder";
 import {ServiceExpressionUpdater} from "./ServiceExpressionUpdater/ServiceExpressionUpdater";
+import {FileLoader} from "@wessberg/fileloader";
 
 export interface ICompileFileResult extends IHasAlteredable {
 	code: string;
@@ -19,9 +19,9 @@ export interface ICompileFileResult extends IHasAlteredable {
 }
 
 const typeDetector = new TypeDetector();
+const marshaller = new Marshaller(typeDetector);
 const compiler = new Compiler(
-	new SimpleLanguageService(ts, {}, new Marshaller(typeDetector)),
-	new ClassDeclarationBuilder(),
+	new CodeAnalyzer(marshaller, new FileLoader(), ts),
 	new ContainerReferenceFinder(DIConfig),
 	new ServiceExpressionFinder(),
 	new ServiceExpressionUpdater(DIConfig, typeDetector),
@@ -37,7 +37,7 @@ const compiler = new Compiler(
  * @returns {ICompileFileResult}
  */
 export function compile (id: string, code: string): ICompileFileResult {
-	const magicString = new MagicString(code);
+	const magicString = new (<any>MagicString)(code);
 	const codeContainer: ICompilerResult = {
 		code: magicString,
 		hasAltered: false

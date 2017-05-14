@@ -1,6 +1,6 @@
 import {IMappedInterfaceToImplementationMap} from "../../ServiceExpressionUpdater/Interface/IServiceExpressionUpdater";
-import {IClassDeclaration} from "@wessberg/simplelanguageservice";
+import {ClassIndexer} from "@wessberg/codeanalyzer";
 
 export interface IClassConstructorArgumentsValidator {
-	validate (classes: Map<string, IClassDeclaration>, mappedInterfaces: IMappedInterfaceToImplementationMap): void;
+	validate (classes: ClassIndexer, mappedInterfaces: IMappedInterfaceToImplementationMap): void;
 }

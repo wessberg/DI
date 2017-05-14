@@ -16,6 +16,10 @@ DIContainer.get<IBar>(); // Retrieves a concrete instance of the IBar service.
 
 ## Changelog:
 
+**v1.0.3**:
+
+- Upgraded to newest version of 'CodeAnalyzer' and refactored all around.
+
 **v1.0.1**:
 
 - Fixed a bug where 'hasAltered' would always be false. Cleanup. Added typings to .gitignore and .npmignore.
