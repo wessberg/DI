@@ -16,6 +16,10 @@ DIContainer.get<IBar>(); // Retrieves a concrete instance of the IBar service.
 
 ## Changelog:
 
+**v1.0.8**:
+
+- Mapped interfaces are now stored on the global object to support IIFE and arbitrary execution order.
+
 **v1.0.7**:
 
 - Bumped CodeAnalyzer dependency to v1.0.5.
