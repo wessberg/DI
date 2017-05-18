@@ -2,6 +2,8 @@ import {test} from "ava";
 import {compile} from "../src/DI";
 import {DIConfig} from "../src/DIConfig/DIConfig";
 
+
+
 test("blabla", t => {
 	compile("a_file.ts", `
 		interface IFoo {}

@@ -38,7 +38,7 @@
     "typescript": "2.3.2"
   },
   "dependencies": {
-    "@wessberg/codeanalyzer": "^1.0.5",
+    "@wessberg/codeanalyzer": "^1.0.6",
     "@wessberg/fileloader": "^1.0.2",
     "@wessberg/globalobject": "^1.0.3",
     "@wessberg/marshaller": "^1.0.22",

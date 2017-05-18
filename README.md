@@ -16,6 +16,10 @@ DIContainer.get<IBar>(); // Retrieves a concrete instance of the IBar service.
 
 ## Changelog:
 
+**v1.0.10**:
+
+- Bumped CodeAnalyzer dependency to v1.0.6.
+
 **v1.0.9**:
 
 - Bumped GlobalObject dependency to v1.0.3
