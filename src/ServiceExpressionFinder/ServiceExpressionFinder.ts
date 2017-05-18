@@ -16,10 +16,11 @@ export class ServiceExpressionFinder implements IServiceExpressionFinder {
 	 * @returns {ICallExpression[]}
 	 */
 	public find ({host, statements, identifiers, filepath}: IServiceExpressionFinderFindMethodOptions): ICallExpression[] {
-		const expressions = host.getCallExpressions(statements);
+		const expressions = host.getCallExpressions(statements, true);
 		return expressions.filter(exp => {
+			if (exp.property == null || !identifiers.has(exp.property.toString())) return false;
 			this.assertNoArguments(exp, filepath).property;
-			return exp.property != null && identifiers.has(exp.property.toString());
+			return true;
 		});
 	}
 
