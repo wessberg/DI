@@ -38,12 +38,12 @@
     "typescript": "2.3.2"
   },
   "dependencies": {
-    "@wessberg/codeanalyzer": "^1.0.2",
+    "@wessberg/codeanalyzer": "^1.0.4",
     "@wessberg/fileloader": "^1.0.2",
     "@wessberg/globalobject": "^1.0.2",
-    "@wessberg/marshaller": "^1.0.18",
-    "@wessberg/typedetector": "^1.0.4",
-    "magic-string": "^0.19.1",
+    "@wessberg/marshaller": "^1.0.22",
+    "@wessberg/typedetector": "^1.0.5",
+    "magic-string": "^0.20.0",
     "tslib": "^1.7.1"
   }
 }
