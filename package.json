@@ -16,7 +16,7 @@
     "build:es2015": "tsc --module es2015 --outDir dist/es2015 -p tsconfig.dist.json",
     "build": "npm run build:pre && npm run build:cjs && npm run build:es2015",
     "test:pre": "npm run clean:compiled && tsc --module commonjs --target es2017 --sourceMap",
-    "test": "NODE_ENV=TEST npm run test:pre && ava --verbose"
+    "test": "NODE_ENV=TEST npm run test:pre && ava"
   },
   "keywords": [
     "DI",
@@ -38,7 +38,7 @@
     "typescript": "2.3.2"
   },
   "dependencies": {
-    "@wessberg/codeanalyzer": "^1.0.4",
+    "@wessberg/codeanalyzer": "^1.0.5",
     "@wessberg/fileloader": "^1.0.2",
     "@wessberg/globalobject": "^1.0.2",
     "@wessberg/marshaller": "^1.0.22",
