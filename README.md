@@ -16,6 +16,10 @@ DIContainer.get<IBar>(); // Retrieves a concrete instance of the IBar service.
 
 ## Changelog:
 
+**v1.0.9**:
+
+- Bumped GlobalObject dependency to v1.0.3
+
 **v1.0.8**:
 
 - Mapped interfaces are now stored on the global object to support IIFE and arbitrary execution order.
