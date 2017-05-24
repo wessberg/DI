@@ -1,2 +1,2 @@
 export {DIContainer} from "./DIContainer/DIContainer";
-export {IDIContainer} from "./DIContainer/Interface/IDIContainer";
+export {IDIContainer, IGetOptions, IRegisterOptions} from "./DIContainer/Interface/IDIContainer";

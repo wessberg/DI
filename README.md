@@ -16,6 +16,10 @@ DIContainer.get<IBar>(); // Retrieves a concrete instance of the IBar service.
 
 ## Changelog:
 
+**v1.0.15**:
+
+- Added the `IGetOptions` and `IRegisterOptions` to the exports of the module.
+
 **v1.0.14**:
 
 - Separated the DIContainer from the compiler. The compiler has moved [here](https://www.npmjs.com/package/@wessberg/di-compiler).
