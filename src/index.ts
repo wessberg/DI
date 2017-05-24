@@ -1,3 +1,2 @@
-export {IDIConfig} from "./DIConfig/Interface/IDIConfig";
 export {DIContainer} from "./DIContainer/DIContainer";
-export {compile, getClassConstructorArgumentsStringified, ICompileFileResult} from "./DI";
+export {IDIContainer} from "./DIContainer/Interface/IDIContainer";

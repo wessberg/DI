@@ -1,6 +1,4 @@
 import {IContainerIdentifierable, IDIContainer, IGetOptions, IRegisterOptions, IRegistrationRecord, RegistrationKind} from "./Interface/IDIContainer";
-import {IDIConfig} from "../DIConfig/Interface/IDIConfig";
-import {DIConfig} from "../DIConfig/DIConfig";
 import {GlobalObject} from "@wessberg/globalobject";
 
 /**
@@ -11,9 +9,6 @@ import {GlobalObject} from "@wessberg/globalobject";
 export class DIServiceContainer implements IDIContainer {
 	private serviceRegistry: Map<string, IRegistrationRecord<{}>> = new Map();
 	private instances: Map<string, any> = new Map();
-
-	constructor (private config: IDIConfig) {
-	}
 
 	/**
 	 * Registers a service that will be instantiated once in the application lifecycle. All requests
@@ -109,10 +104,10 @@ export class DIServiceContainer implements IDIContainer {
 			return <T>this.getInstance(identifier);
 		}
 
-		const instance = <T>new registrationRecord.implementation(...GlobalObject[<keyof Window>this.config.interfaceConstructorArgumentsMapName][identifier].map((dep: string) => dep === undefined ? undefined : this.constructInstance({identifier: dep})));
+		const instance = <T>new registrationRecord.implementation(...GlobalObject[<keyof Window>"___interfaceConstructorArgumentsMap___"][identifier].map((dep: string) => dep === undefined ? undefined : this.constructInstance({identifier: dep})));
 		return registrationRecord.kind === RegistrationKind.SINGLETON ? this.setInstance<T>(identifier, instance) : instance;
 	}
 }
 
-// Only provide access to a concrete instance of the DIServiceContainer to the outside.
-export const DIContainer = new DIServiceContainer(DIConfig);
+// Provide access to a concrete instance of the DIServiceContainer to the outside.
+export const DIContainer = new DIServiceContainer();

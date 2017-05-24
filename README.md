@@ -16,6 +16,10 @@ DIContainer.get<IBar>(); // Retrieves a concrete instance of the IBar service.
 
 ## Changelog:
 
+**v1.0.14**:
+
+- Separated the DIContainer from the compiler. The compiler has moved [here](https://www.npmjs.com/package/@wessberg/di-compiler).
+
 **v1.0.13**:
 
 - Bumped CodeAnalyzer dependency to ^v1.0.8.
