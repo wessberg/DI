@@ -32,7 +32,7 @@ export class ServiceExpressionUpdater implements IServiceExpressionUpdater {
 				this.handleGetExpression(codeContainer, expression);
 			}
 		});
-		
+
 		return mappedInterfaces;
 	}
 
