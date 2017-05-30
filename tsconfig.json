@@ -9,7 +9,7 @@
     "strictNullChecks": true,
     "module": "es2015",
     "noImplicitAny": true,
-    "noUnusedLocals": true,
+    "noUnusedLocals": false,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,

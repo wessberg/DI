@@ -33,7 +33,7 @@
   "author": "Frederik Wessberg",
   "license": "MIT",
   "devDependencies": {
-    "typescript": "2.3.3"
+    "typescript": "2.3.4"
   },
   "dependencies": {
     "tslib": "^1.7.1"

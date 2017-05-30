@@ -42,12 +42,26 @@ export class DIServiceContainer implements IDIContainer {
 	 * generic interface name.
 	 *
 	 * You should not pass any options to the method if using the compiler. It will do that automatically.
-	 * @param {IRegisterOptions<U>} [options]
+	 * @param {IGetOptions} [options]
 	 * @returns {T}
 	 */
 	public get<T> (options?: IGetOptions): T {
 		if (options == null) throw new ReferenceError(`${this.constructor.name} could not get service: No options was given!`);
 		return this.constructInstance<T>(options);
+	}
+
+	/**
+	 * Returns true if a service has been registered matching the interface given as a generic type parameter.
+	 * For example, 'container.get<IFoo>()' returns a concrete instance of the implementation associated with the
+	 * generic interface name.
+	 *
+	 * You should not pass any options to the method if using the compiler. It will do that automatically.
+	 * @param {IGetOptions} [options]
+	 * @returns {boolean}
+	 */
+	public has<T> (options?: IGetOptions): boolean {
+		if (options == null) throw new ReferenceError(`${this.constructor.name} could not get service: No options was given!`);
+		return this.serviceRegistry.has(options.identifier);
 	}
 
 	/**

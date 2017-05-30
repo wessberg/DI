@@ -26,4 +26,5 @@ export interface IDIContainer {
 	registerSingleton<T, U extends T> (options?: IRegisterOptions<U>): void;
 	registerTransient<T, U extends T> (options?: IRegisterOptions<U>): void;
 	get<T> (options?: IGetOptions): T;
+	has<T> (options?: IGetOptions): boolean;
 }

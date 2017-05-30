@@ -16,6 +16,10 @@ DIContainer.get<IBar>(); // Retrieves a concrete instance of the IBar service.
 
 ## Changelog:
 
+**v1.0.16**:
+
+- Added a new method: `has`, which returns true if a service matching the given generic type parameter has been registered.
+
 **v1.0.15**:
 
 - Added the `IGetOptions` and `IRegisterOptions` to the exports of the module.
