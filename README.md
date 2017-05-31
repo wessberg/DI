@@ -16,6 +16,10 @@ DIContainer.get<IBar>(); // Retrieves a concrete instance of the IBar service.
 
 ## Changelog:
 
+**v1.0.17**:
+
+- Added a `noInject` decorator to the exports of the module which, together with the DI-compiler, will tell the Compiler to skip the classes that has it.
+
 **v1.0.16**:
 
 - Added a new method: `has`, which returns true if a service matching the given generic type parameter has been registered.
