@@ -7,6 +7,13 @@
   "browser": "./dist/es2015/index.js",
   "types": "./dist/es2015/index.d.ts",
   "typings": "./dist/es2015/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wessberg/DI.git"
+  },
+  "bugs": {
+    "url": "https://github.com/wessberg/DI/issues"
+  },
   "scripts": {
     "clean:dist": "rm -r -f dist",
     "clean:compiled": "rm -r -f compiled",
