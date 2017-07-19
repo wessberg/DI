@@ -1,3 +1,12 @@
+<a name="1.0.19"></a>
+## 1.0.19 (2017-07-19)
+
+* 1.0.19 ([04b8515](https://github.com/wessberg/di/commit/04b8515))
+* Bumped version ([17c361f](https://github.com/wessberg/di/commit/17c361f))
+* Fixed an issue in the README ([b4366ec](https://github.com/wessberg/di/commit/b4366ec))
+
+
+
 <a name="1.0.18"></a>
 ## 1.0.18 (2017-07-19)
 
