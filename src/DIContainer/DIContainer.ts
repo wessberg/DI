@@ -1,5 +1,5 @@
 import {IContainerIdentifierable, IDIContainer, IGetOptions, IRegisterOptions, IRegistrationRecord, RegistrationKind} from "./Interface/IDIContainer";
-import {GlobalObject} from "@wessberg/globalobject";
+import {globalObject} from "@wessberg/globalobject";
 
 /**
  * A Dependency-Injection container that holds services and can produce instances of them as required.
@@ -7,20 +7,30 @@ import {GlobalObject} from "@wessberg/globalobject";
  * @author Frederik Wessberg
  */
 export class DIServiceContainer implements IDIContainer {
-	private serviceRegistry: Map<string, IRegistrationRecord<{}>> = new Map();
-	private instances: Map<string, any> = new Map();
+	/**
+	 * A Map between identifying names for services and their IRegistrationRecords.
+	 * @type {Map<string, IRegistrationRecord<{}, {}>>}
+	 */
+	private serviceRegistry: Map<string, IRegistrationRecord<{}, {}>> = new Map();
+
+	/**
+	 * A map between identifying names for services and concrete instances of their implementation.
+	 * @type {Map<string, *>}
+	 */
+	private instances: Map<string, /*tslint:disable*/any/*tslint:enable*/> = new Map();
 
 	/**
 	 * Registers a service that will be instantiated once in the application lifecycle. All requests
 	 * for the service will retrieve the same instance of it.
 	 *
 	 * You should not pass any options to the method if using the compiler. It will do that automatically.
+	 * @param {() => U} [newExpression]
 	 * @param {IRegisterOptions<U>} [options]
 	 * @returns {void}
 	 */
-	public registerSingleton<T, U extends T> (options?: IRegisterOptions<U>): void {
+	public registerSingleton<T, U extends T> (newExpression?: () => U, options?: IRegisterOptions<U>): void {
 		if (options == null) throw new ReferenceError(`${this.constructor.name} could not register service: No options was given!`);
-		this.serviceRegistry.set(options.identifier, {...options, ...{kind: RegistrationKind.SINGLETON}});
+		this.serviceRegistry.set(options.identifier, {...options, kind: RegistrationKind.SINGLETON, ...(newExpression == null ? {} : newExpression) });
 	}
 
 	/**
@@ -28,12 +38,13 @@ export class DIServiceContainer implements IDIContainer {
 	 * This means that every call to get() will return a unique instance of the service.
 	 *
 	 * You should not pass any options to the method if using the compiler. It will do that automatically.
+	 * @param {() => U} [newExpression]
 	 * @param {IRegisterOptions<U>} [options]
 	 * @returns {void}
 	 */
-	public registerTransient<T, U extends T> (options?: IRegisterOptions<U>): void {
+	public registerTransient<T, U extends T> (newExpression?: () => U, options?: IRegisterOptions<U>): void {
 		if (options == null) throw new ReferenceError(`${this.constructor.name} could not register service: No options was given!`);
-		this.serviceRegistry.set(options.identifier, {...options, ...{kind: RegistrationKind.TRANSIENT}});
+		this.serviceRegistry.set(options.identifier, {...options, kind: RegistrationKind.TRANSIENT, ...(newExpression == null ? {} : newExpression)});
 	}
 
 	/**
@@ -86,12 +97,12 @@ export class DIServiceContainer implements IDIContainer {
 	/**
 	 * Gets an IRegistrationRecord associated with the given identifier.
 	 * @param {string} identifier
-	 * @returns {IRegistrationRecord<T>}
+	 * @returns {IRegistrationRecord<T,U>}
 	 */
-	private getRegistrationRecord<T> (identifier: string): IRegistrationRecord<T> {
+	private getRegistrationRecord<T, U extends T> (identifier: string): IRegistrationRecord<T, U> {
 		const record = this.serviceRegistry.get(identifier);
 		if (record == null) throw new ReferenceError(`${this.constructor.name} could not get registration record: No implementation was found!`);
-		return <IRegistrationRecord<T>>record;
+		return <IRegistrationRecord<T, U>>record;
 	}
 
 	/**
@@ -102,7 +113,7 @@ export class DIServiceContainer implements IDIContainer {
 	 */
 	private setInstance<T> (identifier: string, instance: T): T {
 		this.instances.set(identifier, instance);
-		return <T>instance;
+		return instance;
 	}
 
 	/**
@@ -117,11 +128,26 @@ export class DIServiceContainer implements IDIContainer {
 		if (this.hasInstance(identifier) && registrationRecord.kind === RegistrationKind.SINGLETON) {
 			return <T>this.getInstance(identifier);
 		}
+		let instance: T;
 
-		const instance = <T>new registrationRecord.implementation(...GlobalObject[<keyof Window>"___interfaceConstructorArgumentsMap___"][identifier].map((dep: string) => dep === undefined ? undefined : this.constructInstance({identifier: dep})));
+		// If a user-provided new-expression has been provided, invoke that to get an instance.
+		if (registrationRecord.newExpression != null) {
+			instance = <T>/*tslint:disable:no-inferred-empty-object-type*/registrationRecord.newExpression();/*tslint:enable:no-inferred-empty-object-type*/
+		} else {
+
+			// Try to construct an instance with 'new' and if it fails, call the implementation directly.
+			const args = globalObject[<keyof Window>"___interfaceConstructorArgumentsMap___"][identifier].map((dep: string) => dep === undefined ? undefined : this.constructInstance<T>({identifier: dep}));
+
+			try {
+				instance = <T>new registrationRecord.implementation(...args);
+			} catch (ex) {
+				// Try without 'new' and call the implementation as a function.
+				instance = <T>(</*tslint:disable*/any/*tslint:enable*/>registrationRecord).implementation(...args);
+			}
+		}
 		return registrationRecord.kind === RegistrationKind.SINGLETON ? this.setInstance<T>(identifier, instance) : instance;
 	}
 }
 
 // Provide access to a concrete instance of the DIServiceContainer to the outside.
-export const DIContainer = new DIServiceContainer();
+export const /*tslint:disable*/DIContainer/*tslint:enable*/ = new DIServiceContainer();
