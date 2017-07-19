@@ -1,3 +1,12 @@
+<a name="1.0.20"></a>
+## 1.0.20 (2017-07-19)
+
+* 1.0.20 ([33a85be](https://github.com/wessberg/di/commit/33a85be))
+* Bumped version ([518a4d9](https://github.com/wessberg/di/commit/518a4d9))
+* Refined typings to allow non-newable implementations ([db813b6](https://github.com/wessberg/di/commit/db813b6))
+
+
+
 <a name="1.0.19"></a>
 ## 1.0.19 (2017-07-19)
 
