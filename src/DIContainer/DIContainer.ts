@@ -1,4 +1,4 @@
-import {IContainerIdentifierable, IDIContainer, IGetOptions, IRegisterOptions, IRegistrationRecord, RegistrationKind} from "./Interface/IDIContainer";
+import {CustomConstructableService, IContainerIdentifierable, IDIContainer, IGetOptions, IRegisterOptions, IRegistrationRecord, NewableService, RegistrationKind} from "./Interface/IDIContainer";
 import {globalObject} from "@wessberg/globalobject";
 
 /**
@@ -139,10 +139,12 @@ export class DIServiceContainer implements IDIContainer {
 			const args = globalObject[<keyof Window>"___interfaceConstructorArgumentsMap___"][identifier].map((dep: string) => dep === undefined ? undefined : this.constructInstance<T>({identifier: dep}));
 
 			try {
-				instance = <T>new registrationRecord.implementation(...args);
+				const newable = <NewableService<T>>registrationRecord.implementation;
+				instance = new newable(...args);
 			} catch (ex) {
+				const constructable = <CustomConstructableService<T>>registrationRecord.implementation;
 				// Try without 'new' and call the implementation as a function.
-				instance = <T>(</*tslint:disable*/any/*tslint:enable*/>registrationRecord).implementation(...args);
+				instance = constructable(...args);
 			}
 		}
 		return registrationRecord.kind === RegistrationKind.SINGLETON ? this.setInstance<T>(identifier, instance) : instance;

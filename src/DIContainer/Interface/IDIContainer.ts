@@ -2,8 +2,11 @@ export interface IContainerIdentifierable {
 	identifier: string;
 }
 
+export declare type NewableService<T> = new (...args: ConstructorArgument[]) => T;
+export declare type CustomConstructableService<T> = (...args: ConstructorArgument[]) => T;
+
 export interface IImplementationable<T> {
-	implementation: new (...args: ConstructorArgument[]) => T;
+	implementation: NewableService<T>|CustomConstructableService<T>;
 }
 
 export interface IRegisterOptions<T> extends IContainerIdentifierable, IImplementationable<T> {
