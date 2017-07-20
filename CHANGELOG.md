@@ -1,3 +1,12 @@
+<a name="1.0.21"></a>
+## 1.0.21 (2017-07-20)
+
+* 1.0.21 ([6211cea](https://github.com/wessberg/di/commit/6211cea))
+* Bumped version ([b434dda](https://github.com/wessberg/di/commit/b434dda))
+* Fixed a bug where new expressions wouldn't be properly instantiated ([e92b55c](https://github.com/wessberg/di/commit/e92b55c))
+
+
+
 <a name="1.0.20"></a>
 ## 1.0.20 (2017-07-19)
 
