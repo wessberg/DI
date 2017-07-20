@@ -30,7 +30,7 @@ export class DIServiceContainer implements IDIContainer {
 	 */
 	public registerSingleton<T, U extends T> (newExpression?: () => U, options?: IRegisterOptions<U>): void {
 		if (options == null) throw new ReferenceError(`${this.constructor.name} could not register service: No options was given!`);
-		this.serviceRegistry.set(options.identifier, {...options, kind: RegistrationKind.SINGLETON, ...(newExpression == null ? {} : newExpression) });
+		this.serviceRegistry.set(options.identifier, {...options, kind: RegistrationKind.SINGLETON, ...(newExpression == null ? {} : {newExpression}) });
 	}
 
 	/**
@@ -44,7 +44,7 @@ export class DIServiceContainer implements IDIContainer {
 	 */
 	public registerTransient<T, U extends T> (newExpression?: () => U, options?: IRegisterOptions<U>): void {
 		if (options == null) throw new ReferenceError(`${this.constructor.name} could not register service: No options was given!`);
-		this.serviceRegistry.set(options.identifier, {...options, kind: RegistrationKind.TRANSIENT, ...(newExpression == null ? {} : newExpression)});
+		this.serviceRegistry.set(options.identifier, {...options, kind: RegistrationKind.TRANSIENT, ...(newExpression == null ? {} : {newExpression})});
 	}
 
 	/**
