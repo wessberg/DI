@@ -1,3 +1,11 @@
+<a name="1.0.22"></a>
+## 1.0.22 (2017-07-26)
+
+* Bumped version ([5bad4a5](https://github.com/wessberg/di/commit/5bad4a5))
+* Made it possible for implementations of services to be null if a custom new expression is passed as  ([7a15be2](https://github.com/wessberg/di/commit/7a15be2))
+
+
+
 <a name="1.0.21"></a>
 ## 1.0.21 (2017-07-20)
 
