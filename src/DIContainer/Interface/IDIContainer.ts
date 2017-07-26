@@ -6,7 +6,7 @@ export declare type NewableService<T> = new (...args: ConstructorArgument[]) => 
 export declare type CustomConstructableService<T> = (...args: ConstructorArgument[]) => T;
 
 export interface IImplementationable<T> {
-	implementation: NewableService<T>|CustomConstructableService<T>;
+	implementation: NewableService<T>|CustomConstructableService<T>|null;
 }
 
 export interface IRegisterOptions<T> extends IContainerIdentifierable, IImplementationable<T> {
