@@ -43,14 +43,13 @@
 		"transient"
 	],
 	"devDependencies": {
-		"@wessberg/ts-config": "0.0.20",
-		"typescript": "latest",
-		"tslint": "latest",
+		"@wessberg/ts-config": "0.0.23",
+		"conventional-changelog-cli": "^1.3.3",
 		"husky": "latest",
-		"conventional-changelog-cli": "latest"
+		"tslint": "^5.7.0",
+		"typescript": "^2.5.2"
 	},
 	"dependencies": {
-		"@wessberg/globalobject": "^1.0.7",
 		"tslib": "^1.7.1"
 	},
 	"main": "./dist/umd/index.js",
