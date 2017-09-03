@@ -1,6 +1,9 @@
-<a name="1.0.22"></a>
-## 1.0.22 (2017-07-26)
+<a name="1.0.23"></a>
+## 1.0.23 (2017-09-03)
 
+* 1.0.23 ([cff1e6b](https://github.com/wessberg/di/commit/cff1e6b))
+* Bumped dependencies. Refactoring. Constructor arguments are now kept local to the DIContainer ([6240396](https://github.com/wessberg/di/commit/6240396))
+* Bumped version ([fdb5432](https://github.com/wessberg/di/commit/fdb5432))
 * Bumped version ([5bad4a5](https://github.com/wessberg/di/commit/5bad4a5))
 * Made it possible for implementations of services to be null if a custom new expression is passed as  ([7a15be2](https://github.com/wessberg/di/commit/7a15be2))
 
