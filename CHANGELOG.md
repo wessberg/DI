@@ -1,3 +1,11 @@
+<a name="1.0.24"></a>
+## 1.0.24 (2017-09-03)
+
+* 1.0.24 ([413c87f](https://github.com/wessberg/di/commit/413c87f))
+* Updated scripts ([c6a37d5](https://github.com/wessberg/di/commit/c6a37d5))
+
+
+
 <a name="1.0.23"></a>
 ## 1.0.23 (2017-09-03)
 

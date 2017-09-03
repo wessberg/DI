@@ -1,4 +1,14 @@
 # DI (Dependency Injector)
+[![NPM version][npm-version-image]][npm-version-url]
+[![License-mit][license-mit-image]][license-mit-url]
+
+[license-mit-url]: https://opensource.org/licenses/MIT
+
+[license-mit-image]: https://img.shields.io/badge/License-MIT-yellow.svg
+
+[npm-version-url]: https://www.npmjs.com/package/@wessberg/di
+
+[npm-version-image]: https://badge.fury.io/js/%40wessberg%2Fdi.svg
 
 > A Dependency-Injection container that holds services and can produce instances of them as required. It mimics reflection by parsing the app at compile-time and supporting the generic-reflection syntax.
 
