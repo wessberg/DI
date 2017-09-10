@@ -8,6 +8,7 @@ import {IHasOptions} from "../has-options/i-has-options";
 import {IContainerIdentifierable} from "../container-identifierable/i-container-identifierable";
 import {NewableService} from "../newable-service/newable-service";
 import {CustomConstructableService} from "../custom-constructable-service/custom-constructable-service";
+import {IConstructInstanceOptions} from "../construct-instance-options/i-construct-instance-options";
 
 /**
  * A Dependency-Injection container that holds services and can produce instances of them as required.
@@ -129,9 +130,9 @@ export class DIServiceContainer implements IDIContainer {
 	 * @param {string} identifier
 	 * @returns {IRegistrationRecord<T,U>}
 	 */
-	private getRegistrationRecord<T, U extends T> (identifier: string): IRegistrationRecord<T, U> {
+	private getRegistrationRecord<T, U extends T> ({identifier, parent}: IConstructInstanceOptions): IRegistrationRecord<T, U> {
 		const record = this.serviceRegistry.get(identifier);
-		if (record == null) throw new ReferenceError(`${this.constructor.name} could not get registration record: No implementation was found!`);
+		if (record == null) throw new ReferenceError(`${this.constructor.name} could not find a service for identifier: "${identifier}". ${parent == null ? "" : `It is required by the service: '${parent}'.`} Remember to register it as a service!`);
 		return <IRegistrationRecord<T, U>>record;
 	}
 
@@ -152,8 +153,8 @@ export class DIServiceContainer implements IDIContainer {
 	 * @param {string} identifier
 	 * @returns {T}
 	 */
-	private constructInstance<T> ({identifier}: IContainerIdentifierable): T {
-		const registrationRecord = this.getRegistrationRecord(identifier);
+	private constructInstance<T> ({identifier, parent}: IConstructInstanceOptions): T {
+		const registrationRecord = this.getRegistrationRecord({identifier, parent});
 
 		// If an instance already exists (and it is a singleton), return that one
 		if (this.hasInstance(identifier) && registrationRecord.kind === RegistrationKind.SINGLETON) {
@@ -173,7 +174,7 @@ export class DIServiceContainer implements IDIContainer {
 			if (mappedArgs == null) throw new ReferenceError(`${this.constructor.name} could not find constructor arguments for the service: '${identifier}'. Have you registered it as a service?`);
 
 			// Instantiate all of the argument services (or re-use them if they were registered as singletons)
-			const instanceArgs = mappedArgs.map((dep: string) => dep === undefined ? undefined : this.constructInstance<T>({identifier: dep}));
+			const instanceArgs = mappedArgs.map((dep: string) => dep === undefined ? undefined : this.constructInstance<T>({identifier: dep, parent: identifier}));
 
 			try {
 				// Try to construct an instance with 'new' and if it fails, call the implementation directly.
