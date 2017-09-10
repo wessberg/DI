@@ -1,3 +1,13 @@
+<a name="1.0.25"></a>
+## 1.0.25 (2017-09-10)
+
+* 1.0.25 ([ec30aea](https://github.com/wessberg/di/commit/ec30aea))
+* Added better diagnostics ([26c0b7d](https://github.com/wessberg/di/commit/26c0b7d))
+* Bumped version ([14dfb3e](https://github.com/wessberg/di/commit/14dfb3e))
+* Fixed JSDoc ([e927f24](https://github.com/wessberg/di/commit/e927f24))
+
+
+
 <a name="1.0.24"></a>
 ## 1.0.24 (2017-09-03)
 
