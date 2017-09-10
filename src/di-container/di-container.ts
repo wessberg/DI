@@ -128,6 +128,7 @@ export class DIServiceContainer implements IDIContainer {
 	/**
 	 * Gets an IRegistrationRecord associated with the given identifier.
 	 * @param {string} identifier
+	 * @param {string} [parent]
 	 * @returns {IRegistrationRecord<T,U>}
 	 */
 	private getRegistrationRecord<T, U extends T> ({identifier, parent}: IConstructInstanceOptions): IRegistrationRecord<T, U> {
