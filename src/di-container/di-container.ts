@@ -25,14 +25,14 @@ export class DIServiceContainer implements IDIContainer {
 	 * A Map between identifying names for services and their IRegistrationRecords.
 	 * @type {Map<string, IRegistrationRecord<{}, {}>>}
 	 */
-	private serviceRegistry: Map<string, IRegistrationRecord<{}, {}>> = new Map();
+	private readonly serviceRegistry: Map<string, IRegistrationRecord<{}, {}>> = new Map();
 
 	/**
 	 * A map between identifying names for services and concrete instances of their implementation.
 	 * @type {Map<string, *>}
 	 */
 	/*tslint:disable:no-any*/
-	private instances: Map<string, any> = new Map();
+	private readonly instances: Map<string, any> = new Map();
 	/*tslint:enable:no-any*/
 
 	/**
