@@ -1,14 +1,17 @@
-import {IDIContainer} from "./i-di-container";
-import {ConstructorArgument} from "../constructor-argument/constructor-argument";
-import {IRegistrationRecord} from "../registration-record/i-registration-record";
-import {RegistrationKind} from "../registration-kind/registration-kind";
-import {IRegisterOptions} from "../register-options/i-register-options";
+import {IConstructInstanceOptions} from "../construct-instance-options/i-construct-instance-options";
+import {ConstructorArgument} from "../constructor-arguments/constructor-argument";
+import {CONSTRUCTOR_ARGUMENTS_IDENTIFIER} from "../constructor-arguments/constructor-arguments-identifier";
+import {CustomConstructableService} from "../custom-constructable-service/custom-constructable-service";
 import {IGetOptions} from "../get-options/i-get-options";
 import {IHasOptions} from "../has-options/i-has-options";
-import {IContainerIdentifierable} from "../container-identifierable/i-container-identifierable";
 import {NewableService} from "../newable-service/newable-service";
-import {CustomConstructableService} from "../custom-constructable-service/custom-constructable-service";
-import {IConstructInstanceOptions} from "../construct-instance-options/i-construct-instance-options";
+import {IRegisterOptions} from "../register-options/i-register-options";
+import {RegistrationKind} from "../registration-kind/registration-kind";
+import {IRegistrationRecord} from "../registration-record/i-registration-record";
+import {IDIContainer} from "./i-di-container";
+
+// tslint:disable:variable-name
+// tslint:disable:no-any
 
 /**
  * A Dependency-Injection container that holds services and can produce instances of them as required.
@@ -31,9 +34,7 @@ export class DIServiceContainer implements IDIContainer {
 	 * A map between identifying names for services and concrete instances of their implementation.
 	 * @type {Map<string, *>}
 	 */
-	/*tslint:disable:no-any*/
 	private readonly instances: Map<string, any> = new Map();
-	/*tslint:enable:no-any*/
 
 	/**
 	 * Registers a service that will be instantiated once in the application lifecycle. All requests
@@ -99,10 +100,15 @@ export class DIServiceContainer implements IDIContainer {
 		// Make sure that some options were given
 		if (options == null) throw new ReferenceError(`${this.constructor.name} could not register service: No options was given!`);
 
-		// Add the constructor arguments if some were given
-		if (options.constructorArguments != null) {
-			this.constructorArguments.set(options.identifier, [...options.constructorArguments]);
-		}
+		// Add the constructor arguments if there is an implementation and it has a static property representing its constructor arguments
+		const args = options.constructorArguments != null
+			? options.constructorArguments
+			: options.implementation != null
+				? (<any>options).implementation[CONSTRUCTOR_ARGUMENTS_IDENTIFIER]
+				: null;
+
+		this.constructorArguments.set(options.identifier, [...(args == null ? [] : args)]);
+
 		this.serviceRegistry.set(options.identifier, {...options, kind, ...(newExpression == null ? {} : {newExpression})});
 	}
 
@@ -120,7 +126,7 @@ export class DIServiceContainer implements IDIContainer {
 	 * @param {string} identifier
 	 * @returns {T|null}
 	 */
-	private getInstance<T> (identifier: string): T|null {
+	private getInstance<T> (identifier: string): T | null {
 		const instance = this.instances.get(identifier);
 		return instance == null ? null : instance;
 	}
@@ -149,9 +155,19 @@ export class DIServiceContainer implements IDIContainer {
 	}
 
 	/**
+	 * Gets a proxied instance
+	 * @param {T} instance
+	 * @returns {T}
+	 */
+	private getLazyInstance<T> (instance: T): T {
+		return <T> new Proxy({}, { get: (_, key: keyof T) =>  instance[key]});
+	}
+
+	/**
 	 * Constructs a new instance of the given identifier and returns it.
 	 * It checks the constructor arguments and injects any services it might depend on recursively.
 	 * @param {string} identifier
+	 * @param {string?} parent
 	 * @returns {T}
 	 */
 	private constructInstance<T> ({identifier, parent}: IConstructInstanceOptions): T {
@@ -164,6 +180,7 @@ export class DIServiceContainer implements IDIContainer {
 
 		// Otherwise, instantiate a new one
 		let instance: T;
+		let circular: boolean = false;
 
 		// If a user-provided new-expression has been provided, invoke that to get an instance.
 		if (registrationRecord.newExpression != null) {
@@ -177,6 +194,9 @@ export class DIServiceContainer implements IDIContainer {
 			// Instantiate all of the argument services (or re-use them if they were registered as singletons)
 			const instanceArgs = mappedArgs.map((dep: string) => dep === undefined ? undefined : this.constructInstance<T>({identifier: dep, parent: identifier}));
 
+			// It is circular if any of the arguments are identical to that of the identifier
+			circular = mappedArgs.some(arg => arg === identifier);
+
 			try {
 				// Try to construct an instance with 'new' and if it fails, call the implementation directly.
 				const newable = <NewableService<T>>registrationRecord.implementation;
@@ -188,11 +208,14 @@ export class DIServiceContainer implements IDIContainer {
 				instance = constructable(...instanceArgs);
 			}
 		}
+
+		// Make the instance lazy if 'circular' is given in the RegistrationOptions
+		if (circular) {
+			instance = this.getLazyInstance(instance);
+		}
 		return registrationRecord.kind === RegistrationKind.SINGLETON ? this.setInstance<T>(identifier, instance) : instance;
 	}
 }
 
 // Provide access to a concrete instance of the DIServiceContainer to the outside.
-/*tslint:disable*/
 export const DIContainer = new DIServiceContainer();
-/*tslint:enable*/
