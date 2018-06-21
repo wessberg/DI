@@ -101,7 +101,7 @@ export class DIServiceContainer implements IDIContainer {
 		if (options == null) throw new ReferenceError(`${this.constructor.name} could not register service: No options was given!`);
 
 		// Add the constructor arguments if there is an implementation and it has a static property representing its constructor arguments
-		const implementationArguments = (<any>options).implementation[CONSTRUCTOR_ARGUMENTS_IDENTIFIER];
+		const implementationArguments = (<any>options).implementation == null ? null : (<any>options).implementation[CONSTRUCTOR_ARGUMENTS_IDENTIFIER];
 		const args = implementationArguments != null ? implementationArguments : options.constructorArguments != null
 			? options.constructorArguments
 			: null;
