@@ -1,6 +1,6 @@
 {
 	"name": "@wessberg/di",
-	"version": "1.0.29",
+	"version": "1.0.30",
 	"description": "A Dependency-Injection container that holds services and can produce instances of them as required. It mimics reflection by parsing the app at compile-time and supporting the generic-reflection syntax.",
 	"scripts": {
 		"changelog:generate": "conventional-changelog --outfile CHANGELOG.md --release-count 0",
