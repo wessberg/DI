@@ -1,3 +1,10 @@
+## <small>1.0.29 (2018-06-21)</small>
+
+* 1.0.29 ([466c1ac](https://github.com/wessberg/di/commit/466c1ac))
+* Bumped version ([823bf9a](https://github.com/wessberg/di/commit/823bf9a))
+
+
+
 ## <small>1.0.28 (2018-06-21)</small>
 
 * 1.0.28 ([de443e6](https://github.com/wessberg/di/commit/de443e6))
