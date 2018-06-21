@@ -1,3 +1,11 @@
+## <small>1.0.28 (2018-06-21)</small>
+
+* 1.0.28 ([de443e6](https://github.com/wessberg/di/commit/de443e6))
+* Added handling for optionally providing constructor arguments to calls to 'register()' ([74f388e](https://github.com/wessberg/di/commit/74f388e))
+* Bumped version ([bf9c4c8](https://github.com/wessberg/di/commit/bf9c4c8))
+
+
+
 ## <small>1.0.27 (2018-06-08)</small>
 
 * 1.0.27 ([4cb4d7a](https://github.com/wessberg/di/commit/4cb4d7a))
