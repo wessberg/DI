@@ -1,4 +1,5 @@
 import {IConstructInstanceOptions} from "../construct-instance-options/i-construct-instance-options";
+import {IParent} from "../construct-instance-options/i-parent";
 import {ConstructorArgument} from "../constructor-arguments/constructor-argument";
 import {CONSTRUCTOR_ARGUMENTS_IDENTIFIER} from "../constructor-arguments/constructor-arguments-identifier";
 import {CustomConstructableService} from "../custom-constructable-service/custom-constructable-service";
@@ -136,9 +137,9 @@ export class DIServiceContainer implements IDIContainer {
 	 * @param {string} [parent]
 	 * @returns {IRegistrationRecord<T,U>}
 	 */
-	private getRegistrationRecord<T, U extends T> ({identifier, parent}: IConstructInstanceOptions): IRegistrationRecord<T, U> {
+	private getRegistrationRecord<T, U extends T> ({identifier, parentChain}: IConstructInstanceOptions<T>): IRegistrationRecord<T, U> {
 		const record = this.serviceRegistry.get(identifier);
-		if (record == null) throw new ReferenceError(`${this.constructor.name} could not find a service for identifier: "${identifier}". ${parent == null ? "" : `It is required by the service: '${parent}'.`} Remember to register it as a service!`);
+		if (record == null) throw new ReferenceError(`${this.constructor.name} could not find a service for identifier: "${identifier}". ${parentChain == null || parentChain.length < 1 ? "" : `It is required by the service: '${parentChain.map(parent => parent.identifier).join(" -> ")}'.`} Remember to register it as a service!`);
 		return <IRegistrationRecord<T, U>>record;
 	}
 
@@ -154,23 +155,21 @@ export class DIServiceContainer implements IDIContainer {
 	}
 
 	/**
-	 * Gets a proxied instance
-	 * @param {T} instance
-	 * @returns {T}
+	 * Gets a lazy reference to another service
+	 * @param lazyPointer
 	 */
-	private getLazyInstance<T> (instance: T): T {
-		return <T> new Proxy({}, { get: (_, key: keyof T) =>  instance[key]});
+	private getLazyIdentifier<T> (lazyPointer: () => T): T {
+		return <T> new Proxy({}, { get: (_, key: keyof T) =>  lazyPointer()[key]});
 	}
 
 	/**
 	 * Constructs a new instance of the given identifier and returns it.
 	 * It checks the constructor arguments and injects any services it might depend on recursively.
-	 * @param {string} identifier
-	 * @param {string?} parent
+	 * @param {IConstructInstanceOptions<T>} options
 	 * @returns {T}
 	 */
-	private constructInstance<T> ({identifier, parent}: IConstructInstanceOptions): T {
-		const registrationRecord = this.getRegistrationRecord({identifier, parent});
+	private constructInstance<T> ({identifier, parentChain = []}: IConstructInstanceOptions<T>): T {
+		const registrationRecord = this.getRegistrationRecord({identifier, parentChain});
 
 		// If an instance already exists (and it is a singleton), return that one
 		if (this.hasInstance(identifier) && registrationRecord.kind === RegistrationKind.SINGLETON) {
@@ -179,7 +178,11 @@ export class DIServiceContainer implements IDIContainer {
 
 		// Otherwise, instantiate a new one
 		let instance: T;
-		let circular: boolean = false;
+
+		const me: IParent<T> = {
+			identifier,
+			ref: this.getLazyIdentifier(() => instance)
+		};
 
 		// If a user-provided new-expression has been provided, invoke that to get an instance.
 		if (registrationRecord.newExpression != null) {
@@ -191,10 +194,12 @@ export class DIServiceContainer implements IDIContainer {
 			if (mappedArgs == null) throw new ReferenceError(`${this.constructor.name} could not find constructor arguments for the service: '${identifier}'. Have you registered it as a service?`);
 
 			// Instantiate all of the argument services (or re-use them if they were registered as singletons)
-			const instanceArgs = mappedArgs.map((dep: string) => dep === undefined ? undefined : this.constructInstance<T>({identifier: dep, parent: identifier}));
-
-			// It is circular if any of the arguments are identical to that of the identifier
-			circular = mappedArgs.some(arg => arg === identifier);
+			const instanceArgs = mappedArgs.map((dep: string) => {
+				if (dep === undefined) return undefined;
+				const matchedParent = parentChain.find(parent => parent.identifier === dep);
+				if (matchedParent != null) return matchedParent.ref;
+				return this.constructInstance<T>({identifier: dep, parentChain: [...parentChain, me]});
+			});
 
 			try {
 				// Try to construct an instance with 'new' and if it fails, call the implementation directly.
@@ -208,10 +213,6 @@ export class DIServiceContainer implements IDIContainer {
 			}
 		}
 
-		// Make the instance lazy if 'circular' is given in the RegistrationOptions
-		if (circular) {
-			instance = this.getLazyInstance(instance);
-		}
 		return registrationRecord.kind === RegistrationKind.SINGLETON ? this.setInstance<T>(identifier, instance) : instance;
 	}
 }
