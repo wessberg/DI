@@ -1,3 +1,11 @@
+## 1.1.0 (2018-07-03)
+
+* 1.1.0 ([2fb72d6](https://github.com/wessberg/di/commit/2fb72d6))
+* Bumped version ([373f14b](https://github.com/wessberg/di/commit/373f14b))
+* Fixed an issue with automatically detecting and proxying circular dependencies ([5b26d8d](https://github.com/wessberg/di/commit/5b26d8d))
+
+
+
 ## <small>1.0.30 (2018-06-21)</small>
 
 * 1.0.30 ([47897a6](https://github.com/wessberg/di/commit/47897a6))
