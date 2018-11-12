@@ -1,6 +1,6 @@
 {
 	"name": "@wessberg/di",
-	"version": "2.0.0",
+	"version": "2.0.1",
 	"description": "A compile-time powered Dependency-Injection container for Typescript that holds services and can produce instances of them as required.",
 	"scripts": {
 		"generate:readme": "scaffold readme",
