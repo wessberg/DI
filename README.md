@@ -82,18 +82,18 @@ the class will receive the services as arguments to its' constructor:
 
 ```typescript
 class MyClass {
-	constructor (
-		private myService: IMyService,
-		private myOtherService: IMyOtherService,
-		private myAwesomeService: MyAwesomeService
-	) {}
+  constructor(
+    private myService: IMyService,
+    private myOtherService: IMyOtherService,
+    private myAwesomeService: MyAwesomeService
+  ) {}
 }
 ```
 
 The true power of this library in comparison to others is that all of this mapping happens on compile-time.
 This is what enables you to depend on interfaces, rather than objects that live on runtime.
 
-#### Getting instances directly from the `DIContainer` 
+#### Getting instances directly from the `DIContainer`
 
 Sure, you can do that if you want to:
 
