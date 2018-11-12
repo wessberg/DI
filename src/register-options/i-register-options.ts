@@ -1,9 +1,14 @@
 import {IContainerIdentifierable} from "../container-identifierable/i-container-identifierable";
-import {NewableService} from "../newable-service/newable-service";
-import {CustomConstructableService} from "../custom-constructable-service/custom-constructable-service";
-import {ConstructorArgument} from "../constructor-arguments/constructor-argument";
+import {Implementation} from "../implementation/implementation";
 
-export interface IRegisterOptions<T> extends IContainerIdentifierable {
-	implementation: NewableService<T>|CustomConstructableService<T>|null;
-	constructorArguments?: Iterable<ConstructorArgument>|null;
+export interface IRegisterOptionsBase<T> extends IContainerIdentifierable {
 }
+
+export interface IRegisterOptionsWithImplementation<T> extends IRegisterOptionsBase<T> {
+	implementation: Implementation<T>|null;
+}
+
+export interface IRegisterOptionsWithoutImplementation<T> extends IRegisterOptionsBase<T> {
+}
+
+export declare type RegisterOptions<T> = IRegisterOptionsWithImplementation<T>|IRegisterOptionsWithoutImplementation<T>;
