@@ -57,19 +57,19 @@ const container = new DIContainer();
 
 // Register the service as a Singleton. Whenever the 'IMyService' service is requested,
 // the same instance of MyService will be injected
-DIContainer.registerSingleton<IMyService, MyService>();
+container.registerSingleton<IMyService, MyService>();
 
 // Register the service as a Transient. Whenever the 'IMyService' service is requested,
 // a new instance of MyService will be injected
-DIContainer.registerTransient<IMyOtherService, MyOtherService>();
+container.registerTransient<IMyOtherService, MyOtherService>();
 
 // Rather than mapping a class to an interface,
 // here we provide a function that returns an object that implements
 // the required interface
-DIContainer.registerSingleton<IAppConfig>(() => myAppConfig);
+container.registerSingleton<IAppConfig>(() => myAppConfig);
 
 // You don't have to map an interface to an implementation.
-DIContainer.registerSingleton<MyAwesomeService>();
+container.registerSingleton<MyAwesomeService>();
 ```
 
 ### Retrieving instances of services
