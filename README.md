@@ -67,9 +67,15 @@ This library is a runtime dependency, but you need to transform your code with t
   - [Yarn](#yarn)
   - [pnpm](#pnpm)
 - [Usage](#usage)
+  - [Registering services](#registering-services)
+  - [Retrieving instances of services](#retrieving-instances-of-services)
+    - [Injecting instances of services into classes](#injecting-instances-of-services-into-classes)
+    - [Getting instances directly from the `DIContainer`](#getting-instances-directly-from-the-dicontainer)
 - [Contributing](#contributing)
 - [Maintainers](#maintainers)
 - [FAQ](#faq)
+  - [This is pure magic. How does it work?](#this-is-pure-magic-how-does-it-work)
+  - [Is it possible to have multiple, scoped containers?](#is-it-possible-to-have-multiple-scoped-containers)
 - [License](#license)
 
 <!-- SHADOW_SECTION_TOC_END -->
