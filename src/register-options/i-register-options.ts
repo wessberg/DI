@@ -1,14 +1,16 @@
-import {IContainerIdentifierable} from "../container-identifierable/i-container-identifierable";
-import {Implementation} from "../implementation/implementation";
+import { IContainerIdentifierable } from "../container-identifierable/i-container-identifierable";
+import { Implementation } from "../implementation/implementation";
 
-export interface IRegisterOptionsBase<T> extends IContainerIdentifierable {
+export interface IRegisterOptionsBase extends IContainerIdentifierable {}
+
+export interface IRegisterOptionsWithImplementation<T>
+  extends IRegisterOptionsBase {
+  implementation: Implementation<T> | null;
 }
 
-export interface IRegisterOptionsWithImplementation<T> extends IRegisterOptionsBase<T> {
-	implementation: Implementation<T>|null;
-}
+export interface IRegisterOptionsWithoutImplementation
+  extends IRegisterOptionsBase {}
 
-export interface IRegisterOptionsWithoutImplementation<T> extends IRegisterOptionsBase<T> {
-}
-
-export declare type RegisterOptions<T> = IRegisterOptionsWithImplementation<T>|IRegisterOptionsWithoutImplementation<T>;
+export type RegisterOptions<T> =
+  | IRegisterOptionsWithImplementation<T>
+  | IRegisterOptionsWithoutImplementation;

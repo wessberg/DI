@@ -1,86 +1,90 @@
 {
-	"name": "@wessberg/di",
-	"version": "2.0.3",
-	"description": "A compile-time powered Dependency-Injection container for Typescript that holds services and can produce instances of them as required.",
-	"scripts": {
-		"generate:readme": "scaffold readme",
-		"generate:license": "scaffold license",
-		"generate:contributing": "scaffold contributing",
-		"generate:coc": "scaffold coc",
-		"generate:all": "npm run generate:license & npm run generate:contributing & npm run generate:coc & npm run generate:readme",
-		"update": "ncu -ua && npm update && npm install",
-		"lint": "tsc --noEmit && tslint -c tslint.json --project tsconfig.json",
-		"clean:dist": "rm -rf dist",
-		"clean:compiled": "rm -rf compiled",
-		"clean": "npm run clean:dist && npm run clean:compiled",
-		"tsc:cjs": "tsc --module commonjs --outDir dist/cjs -p tsconfig.dist.json",
-		"tsc:esm": "tsc --module es2015 --outDir dist/esm -p tsconfig.dist.json",
-		"prebuild": "npm run clean:dist",
-		"build": "npm run tsc:cjs & npm run tsc:esm",
-		"validate": "npm run lint",
-		"prepare": "npm run build",
-		"beforepublish": "NODE_ENV=production npm run lint && NODE_ENV=production npm run prepare && npm run generate:all && git commit -am \"Bumped version\" || true",
-		"publish:patch": "npm run beforepublish && npm version patch && git push && npm publish",
-		"publish:minor": "npm run beforepublish && npm version minor && git push && npm publish",
-		"publish:major": "npm run beforepublish && npm version major && git push && npm publish"
-	},
-	"keywords": [
-		"DI",
-		"dependency injection",
-		"ioc",
-		"inversion",
-		"service",
-		"container",
-		"newable",
-		"reflection",
-		"singleton",
-		"transient"
-	],
-	"devDependencies": {
-		"@wessberg/ts-config": "^0.0.30",
-		"@wessberg/scaffold": "^1.0.4",
-		"tslint": "^5.11.0",
-		"typescript": "^3.1.6"
-	},
-	"dependencies": {
-		"tslib": "^1.9.3"
-	},
-	"main": "./dist/cjs/index.js",
-	"module": "./dist/esm/index.js",
-	"browser": "./dist/esm/index.js",
-	"types": "./dist/esm/index.d.ts",
-	"typings": "./dist/esm/index.d.ts",
-	"es2015": "./dist/esm/index.js",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/wessberg/di.git"
-	},
-	"bugs": {
-		"url": "https://github.com/wessberg/di/issues"
-	},
-	"author": {
-		"name": "Frederik Wessberg",
-		"email": "frederikwessberg@hotmail.com",
-		"url": "https://github.com/wessberg"
-	},
-	"engines": {
-		"node": ">=9.0.0"
-	},
-	"license": "MIT",
-	"files": [
-		"dist/**/*.*"
-	],
-	"scaffold": {
-		"patreonUserId": "11315442",
-		"logo": "https://raw.githubusercontent.com/wessberg/di/master/documentation/asset/di-logo.png",
-		"contributorMeta": {
-			"Frederik Wessberg": {
-				"imageUrl": "https://avatars2.githubusercontent.com/u/20454213?s=460&v=4",
-				"role": "Maintainer",
-				"twitterHandle": "FredWessberg",
-				"isCocEnforcer": true
-			}
-		},
-		"backers": []
-	}
+  "name": "@wessberg/di",
+  "version": "2.0.3",
+  "description": "A compile-time powered Dependency-Injection container for Typescript that holds services and can produce instances of them as required.",
+  "scripts": {
+    "generate:sandhog": "sandhog all --yes",
+    "generate:changelog": "standard-changelog --first-release",
+    "generate:all": "pnpm run generate:sandhog && pnpm run generate:changelog",
+    "clean": "rimraf dist",
+    "lint": "tsc --noEmit && eslint \"src/**/*.ts\" --color",
+    "prettier": "prettier --write \"{src,test,documentation}/**/*.{js,ts,json,html,xml,css,md}\"",
+    "test": "ava",
+    "prebuild": "pnpm run clean",
+    "build": "pnpm run prebuild && pnpm run rollup",
+    "prewatch": "pnpm run clean",
+    "watch": "pnpm run prewatch && pnpm run rollup -- --watch",
+    "rollup": "rollup -c rollup.config.js",
+    "preversion": "pnpm run lint && pnpm run build",
+    "version": "pnpm run preversion && pnpm run generate:all && git add .",
+    "release": "np --no-cleanup --no-yarn",
+    "update:check": "pnpx npm-check-updates -x typescript-* --dep dev,prod",
+    "update:commit": "pnpx npm-check-updates -u -x typescript-* --dep dev,prod && pnpm update && pnpm install"
+  },
+  "keywords": [
+    "DI",
+    "dependency injection",
+    "ioc",
+    "inversion",
+    "service",
+    "container",
+    "newable",
+    "reflection",
+    "singleton",
+    "transient"
+  ],
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.18.0",
+    "@typescript-eslint/parser": "^5.18.0",
+    "@wessberg/ts-config": "^2.0.0",
+    "rollup-plugin-ts": "^2.0.5",
+    "typescript": "4.6.3",
+    "tslib": "^2.3.1",
+    "npm-check-updates": "^12.5.8",
+    "sandhog": "^1.0.43",
+    "standard-changelog": "^2.0.27",
+    "eslint": "^8.12.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsdoc": "^38.1.6",
+    "husky": "^7.0.4",
+    "np": "^7.6.1",
+    "pnpm": "^6.32.4",
+    "prettier": "^2.6.2",
+    "pretty-quick": "^3.1.3",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.70.1"
+  },
+  "dependencies": {},
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "browser": "./dist/esm/index.js",
+  "types": "./dist/esm/index.d.ts",
+  "typings": "./dist/esm/index.d.ts",
+  "es2015": "./dist/esm/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wessberg/di.git"
+  },
+  "bugs": {
+    "url": "https://github.com/wessberg/di/issues"
+  },
+  "contributors": [
+    {
+      "name": "Frederik Wessberg",
+      "email": "frederikwessberg@hotmail.com",
+      "url": "https://github.com/wessberg",
+      "imageUrl": "https://avatars2.githubusercontent.com/u/20454213?s=460&v=4",
+      "role": "Lead Developer",
+      "twitter": "FredWessberg",
+      "github": "wessberg"
+    }
+  ],
+  "engines": {
+    "node": ">=9.0.0"
+  },
+  "license": "MIT",
+  "files": [
+    "dist/**/*.*"
+  ]
 }

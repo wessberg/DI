@@ -1,4 +1,3 @@
-import {IContainerIdentifierable} from "../container-identifierable/i-container-identifierable";
+import { IContainerIdentifierable } from "../container-identifierable/i-container-identifierable";
 
-export interface IHasOptions extends IContainerIdentifierable {
-}
+export interface IHasOptions extends IContainerIdentifierable {}

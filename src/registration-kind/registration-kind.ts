@@ -1,3 +1,1 @@
-export enum RegistrationKind {
-	SINGLETON, TRANSIENT
-}
+export type RegistrationKind = "SINGLETON" | "TRANSIENT";
