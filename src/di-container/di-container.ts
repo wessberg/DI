@@ -22,6 +22,11 @@ import { ImplementationInstance } from "../implementation/implementation";
  */
 export class DIContainer implements IDIContainer {
   /**
+   * Singleton instance of the container, for global sharing of the container.  
+   */
+   private static diContainer?: DIContainer;
+
+   /**
    * A map between interface names and the services that should be dependency injected
    */
   private readonly constructorArguments: Map<string, ConstructorArgument[]> =
@@ -144,6 +149,25 @@ export class DIContainer implements IDIContainer {
       );
     }
     return this.serviceRegistry.has(options.identifier);
+  }
+
+  /**
+   * Provides a global shared instance of a container (singleton).  This is
+   * especially useful when creating libraries (such as in a monorepo) where
+   * the library's imported file defines the dependencies that need to be
+   * injected for the library to operate without exposing the full set of
+   * injections necessary for each library.
+   * 
+   * Example:
+   * ```ts
+   * DIContainer.singleton.register<MyInterface, MyImplementation>();
+   * ```
+   *
+   * @returns Singleton container.
+   */
+   static get singleton(): DIContainer {
+    if (!DIContainer.diContainer) DIContainer.diContainer = new DIContainer();
+    return DIContainer.diContainer;
   }
 
   /**
@@ -314,9 +338,14 @@ export class DIContainer implements IDIContainer {
         }
         const constructable = registrationRecord.implementation;
         // Try without 'new' and call the implementation as a function.
-        instance = (constructable as unknown as CallableFunction)(
-          ...instanceArgs
-        );
+        try {
+          instance = (constructable as unknown as CallableFunction)(
+            ...instanceArgs
+          );
+        } catch {
+          // throw the original error, as it is likely more descriptive than this alternative attempt
+          throw ex;
+        }
       }
     }
 
