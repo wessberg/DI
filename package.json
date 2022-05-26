@@ -10,7 +10,7 @@
     "lint": "tsc --noEmit && eslint \"src/**/*.ts\" --color",
     "prettier": "prettier --write \"{src,test,documentation}/**/*.{js,ts,json,html,xml,css,md}\"",
     "prebuild": "pnpm run clean",
-    "build": "pnpm run prebuild && pnpm run rollup",
+    "build": "pnpm run prebuild && pnpm run rollup && pnpm run transformer",
     "prewatch": "pnpm run clean",
     "watch": "pnpm run prewatch && pnpm run rollup -- --watch",
     "rollup": "rollup -c rollup.config.js",
