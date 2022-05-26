@@ -366,7 +366,7 @@ export class DIContainer implements IDIContainer {
       );
     }
 
-    return this.diContainerMaps;
+    return this.writableDiContainerMaps;
   }
 }
 
