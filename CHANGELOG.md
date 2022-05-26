@@ -6,7 +6,7 @@
 
 ### Features
 
-- Added support for the embedded JavaScript platform [Moddable](https://github.com/Moddable-OpenSource/moddable), including a `manifest.json` file (similar in concept to `package.json`).
+- Added support for the embedded JavaScript platform [Moddable](https://github.com/Moddable-OpenSource/moddable), including a `manifest.json` file (similar in concept to `package.json`) and preloading (reducing memory consumption with storing preloaded slots/chunks in flash).
 - Added a `transformer.js` file to make it easier to use `ttypescript`
 - Added a new API for a accessing a singleton instance of `DIContainer`.  Useful for sharing a container across independent libraries so prior registrations can be consumed by shared libraries.  `DIContainer.singleton` accesses the singleton of `DIContainer`.
 
