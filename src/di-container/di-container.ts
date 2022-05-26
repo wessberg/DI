@@ -26,21 +26,34 @@ export class DIContainer implements IDIContainer {
    */
    private static diContainer?: DIContainer;
 
-   /**
-   * A map between interface names and the services that should be dependency injected
-   */
-  private readonly constructorArguments: Map<string, ConstructorArgument[]> =
-    new Map();
   /**
-   * A Map between identifying names for services and their IRegistrationRecords.
-   */
-  private readonly serviceRegistry: Map<string, RegistrationRecord<unknown>> =
-    new Map();
+    * Contains all maps in a object, so that Moddable can "preload" the object into flash memory.  See
+    * https://github.com/Moddable-OpenSource/moddable/blob/83dadd3def6d2e7e75fc003a5ab409aa81275dd8/documentation/xs/preload.md
+    * for information on Moddable preloading, but the basic concept is code that the startup code is
+    * executed during the linker so that the resulting slots (variables) can be placed into flash ROM to
+    * reduce the memory footprint.  By moving these maps into an object, Moddable will freeze the object
+    * but allow the members (the maps) to be writable at runtime.
+    */
+  private readonly diMaps: {
+    /**
+     * A map between interface names and the services that should be dependency injected
+     */
+    readonly constructorArguments: Map<string, ConstructorArgument[]>;
+      
+    /**
+     * A Map between identifying names for services and their IRegistrationRecords.
+     */
+    readonly serviceRegistry: Map<string, RegistrationRecord<unknown>>;
 
-  /**
-   * A map between identifying names for services and concrete instances of their implementation.
-   */
-  private readonly instances: Map<string, unknown> = new Map();
+    /**
+     * A map between identifying names for services and concrete instances of their implementation.
+     */
+    readonly instances: Map<string, unknown>;
+   } = {
+    constructorArguments: new Map(),
+    serviceRegistry: new Map(),
+    instances: new Map()
+   }
 
   /**
    * Registers a service that will be instantiated once in the application lifecycle. All requests
@@ -148,7 +161,7 @@ export class DIContainer implements IDIContainer {
         `1 argument required, but only 0 present. ${DI_COMPILER_ERROR_HINT}`
       );
     }
-    return this.serviceRegistry.has(options.identifier);
+    return this.diMaps.serviceRegistry.has(options.identifier);
   }
 
   /**
@@ -195,9 +208,9 @@ export class DIContainer implements IDIContainer {
       options.implementation[CONSTRUCTOR_ARGUMENTS_SYMBOL] != null
         ? options.implementation[CONSTRUCTOR_ARGUMENTS_SYMBOL]!
         : [];
-    this.constructorArguments.set(options.identifier, implementationArguments);
+    this.diMaps.constructorArguments.set(options.identifier, implementationArguments);
 
-    this.serviceRegistry.set(
+    this.diMaps.serviceRegistry.set(
       options.identifier,
       "implementation" in options && options.implementation != null
         ? { ...options, kind }
@@ -216,7 +229,7 @@ export class DIContainer implements IDIContainer {
    * Gets the cached instance, if any, associated with the given identifier.
    */
   private getInstance<T>(identifier: string): T | null {
-    const instance = this.instances.get(identifier);
+    const instance = this.diMaps.instances.get(identifier);
     return instance == null ? null : <T>instance;
   }
 
@@ -227,7 +240,7 @@ export class DIContainer implements IDIContainer {
     identifier,
     parentChain,
   }: IConstructInstanceOptions): RegistrationRecord<T> {
-    const record = this.serviceRegistry.get(identifier);
+    const record = this.diMaps.serviceRegistry.get(identifier);
     if (record == null) {
       throw new ReferenceError(
         `${
@@ -248,7 +261,7 @@ export class DIContainer implements IDIContainer {
    * Caches the given instance so that it can be retrieved in the future.
    */
   private setInstance<T>(identifier: string, instance: T): T {
-    this.instances.set(identifier, instance);
+    this.diMaps.instances.set(identifier, instance);
     return instance;
   }
 
@@ -306,7 +319,7 @@ export class DIContainer implements IDIContainer {
       }
     } else {
       // Find the arguments for the identifier
-      const mappedArgs = this.constructorArguments.get(identifier);
+      const mappedArgs = this.diMaps.constructorArguments.get(identifier);
       if (mappedArgs == null) {
         throw new ReferenceError(
           `${this.constructor.name} could not find constructor arguments for the service: '${identifier}'. Have you registered it as a service?`
