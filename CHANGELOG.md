@@ -1,15 +1,3 @@
-# 2.1.1 (2022-05-26)
-
-### Bug fixes
-
-- Improved error reporting on class instantiations that throw errors by throwing the first error received rather than the failsafe attempt that attempts constructing without using `new`.
-
-### Features
-
-- Added support for the embedded JavaScript platform [Moddable](https://github.com/Moddable-OpenSource/moddable), including a `manifest.json` file (similar in concept to `package.json`) and preloading (reducing memory consumption with storing preloaded slots/chunks in flash).
-- Added a `transformer.js` file to make it easier to use `ttypescript`
-- Added a new API for a accessing a singleton instance of `DIContainer`.  Useful for sharing a container across independent libraries so prior registrations can be consumed by shared libraries.  `DIContainer.singleton` accesses the singleton of `DIContainer`.
-
 # 2.1.0 (2022-04-07)
 
 ### Bug Fixes
