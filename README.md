@@ -141,6 +141,13 @@ container.registerSingleton<IAppConfig>(() => myAppConfig);
 container.registerSingleton<MyAwesomeService>();
 ```
 
+You can also use the `DIContainer.singleton` getter to use a shared, global instance of the container, which is useful when sharing registrations across shared libraries:
+
+```ts
+DIContainer.singleton.registerTransient<IMyService, MyService>();
+```
+
+
 ### Retrieving instances of services
 
 #### Injecting instances of services into classes
@@ -203,6 +210,10 @@ It may look like it, but I assure you it is quite simple. [Read this answer for 
 #### Is it possible to have multiple, scoped containers?
 
 Sure. You can instantiate as many as you want to, as long as you make sure the [Custom Transformer for DI](https://github.com/wessberg/di-compiler) get's to see the files that contain them.
+
+#### Can registered interfaces be shared across libraries?
+
+Yes, and you will need to share the `DIContainer` across those libraries.  A singleton of `DIContainer` is available to assist with sharing by using `DIContainer.singleton`.
 
 <!-- SHADOW_SECTION_LICENSE_START -->
 
