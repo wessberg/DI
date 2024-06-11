@@ -1,6 +1,5 @@
 import { IConstructInstanceOptions } from "../construct-instance-options/i-construct-instance-options";
 import { IParent } from "../construct-instance-options/i-parent";
-import { ConstructorArgument } from "../constructor-arguments/constructor-argument";
 import { CONSTRUCTOR_ARGUMENTS_SYMBOL } from "../constructor-arguments/constructor-arguments-identifier";
 import { IGetOptions } from "../get-options/i-get-options";
 import { IHasOptions } from "../has-options/i-has-options";
@@ -11,7 +10,7 @@ import {
   RegisterOptions,
 } from "../register-options/i-register-options";
 import { RegistrationKind } from "../registration-kind/registration-kind";
-import { IDIContainer } from "./i-di-container";
+import { IDIContainer, IDIContainerMaps } from "./i-di-container";
 import { RegistrationRecord } from "../registration-record/i-registration-record";
 import { ImplementationInstance } from "../implementation/implementation";
 
@@ -21,22 +20,6 @@ import { ImplementationInstance } from "../implementation/implementation";
  * @author Frederik Wessberg
  */
 export class DIContainer implements IDIContainer {
-  /**
-   * A map between interface names and the services that should be dependency injected
-   */
-  private readonly constructorArguments: Map<string, ConstructorArgument[]> =
-    new Map();
-  /**
-   * A Map between identifying names for services and their IRegistrationRecords.
-   */
-  private readonly serviceRegistry: Map<string, RegistrationRecord<unknown>> =
-    new Map();
-
-  /**
-   * A map between identifying names for services and concrete instances of their implementation.
-   */
-  private readonly instances: Map<string, unknown> = new Map();
-
   /**
    * Registers a service that will be instantiated once in the application lifecycle. All requests
    * for the service will retrieve the same instance of it.
@@ -143,9 +126,8 @@ export class DIContainer implements IDIContainer {
         `1 argument required, but only 0 present. ${DI_COMPILER_ERROR_HINT}`
       );
     }
-    return this.serviceRegistry.has(options.identifier);
+    return this.diContainerMaps.serviceRegistry.has(options.identifier);
   }
-
   /**
    * Registers a service
    */
@@ -171,9 +153,9 @@ export class DIContainer implements IDIContainer {
       options.implementation[CONSTRUCTOR_ARGUMENTS_SYMBOL] != null
         ? options.implementation[CONSTRUCTOR_ARGUMENTS_SYMBOL]!
         : [];
-    this.constructorArguments.set(options.identifier, implementationArguments);
+    this.diContainerMaps.constructorArguments.set(options.identifier, implementationArguments);
 
-    this.serviceRegistry.set(
+    this.diContainerMaps.serviceRegistry.set(
       options.identifier,
       "implementation" in options && options.implementation != null
         ? { ...options, kind }
@@ -192,7 +174,7 @@ export class DIContainer implements IDIContainer {
    * Gets the cached instance, if any, associated with the given identifier.
    */
   private getInstance<T>(identifier: string): T | null {
-    const instance = this.instances.get(identifier);
+    const instance = this.diContainerMaps.instances.get(identifier);
     return instance == null ? null : <T>instance;
   }
 
@@ -203,7 +185,7 @@ export class DIContainer implements IDIContainer {
     identifier,
     parentChain,
   }: IConstructInstanceOptions): RegistrationRecord<T> {
-    const record = this.serviceRegistry.get(identifier);
+    const record = this.diContainerMaps.serviceRegistry.get(identifier);
     if (record == null) {
       throw new ReferenceError(
         `${
@@ -224,7 +206,7 @@ export class DIContainer implements IDIContainer {
    * Caches the given instance so that it can be retrieved in the future.
    */
   private setInstance<T>(identifier: string, instance: T): T {
-    this.instances.set(identifier, instance);
+    this.diContainerMaps.instances.set(identifier, instance);
     return instance;
   }
 
@@ -282,7 +264,7 @@ export class DIContainer implements IDIContainer {
       }
     } else {
       // Find the arguments for the identifier
-      const mappedArgs = this.constructorArguments.get(identifier);
+      const mappedArgs = this.diContainerMaps.constructorArguments.get(identifier);
       if (mappedArgs == null) {
         throw new ReferenceError(
           `${this.constructor.name} could not find constructor arguments for the service: '${identifier}'. Have you registered it as a service?`
@@ -323,6 +305,38 @@ export class DIContainer implements IDIContainer {
     return registrationRecord.kind === "SINGLETON"
       ? this.setInstance<T>(identifier, instance)
       : instance;
+  }
+
+   /**
+   * Maps that may get defined during Moddable pre-load, and then frozen into flash memory.  See the getter
+   * `diContainerMaps` which handles the transition from flash to runtime for the maps.
+   */
+   private readonly writableDiContainerMaps: IDIContainerMaps = {
+    constructorArguments: new Map(),
+    serviceRegistry: new Map(),
+    instances: new Map()
+  };
+
+   /**
+   * Getter that provides access to the various maps.  Handles cloning the maps from the read-only preload condition
+   * to a writable runtime version to support Moddable preloads.
+   */
+   private get diContainerMaps(): IDIContainerMaps {
+    // if a map is frozen, it has been preloaded, so we need to clone the map.  This happens because registrations
+    // occur during preload, but then also need to work at runtime.
+    if (Object.isFrozen(this.writableDiContainerMaps.constructorArguments)) {
+      this.writableDiContainerMaps.constructorArguments = new Map(
+        this.writableDiContainerMaps.constructorArguments
+      );
+      this.writableDiContainerMaps.instances = new Map(
+        this.writableDiContainerMaps.instances
+      );
+      this.writableDiContainerMaps.serviceRegistry = new Map(
+        this.writableDiContainerMaps.serviceRegistry
+      );
+    }
+
+    return this.writableDiContainerMaps;
   }
 }
 
