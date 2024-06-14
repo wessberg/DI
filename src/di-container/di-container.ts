@@ -312,16 +312,14 @@ export class DIContainer implements IDIContainer {
             `${this.constructor.name} could not construct a new service of kind: ${identifier}. Reason: No implementation was given!`
           );
         }
-        const constructable = registrationRecord.implementation;
-        // Try without 'new' and call the implementation as a function.
-        try {
-          instance = (constructable as unknown as CallableFunction)(
-            ...instanceArgs
-          );
-        } catch {
-          // throw the original error, as it is likely more descriptive than this alternative attempt
+        if (!(ex instanceof TypeError)) {
           throw ex;
         }
+        const constructable = registrationRecord.implementation;
+        // Try without 'new' and call the implementation as a function.
+        instance = (constructable as unknown as CallableFunction)(
+          ...instanceArgs
+        );
       }
     }
 
