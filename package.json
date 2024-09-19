@@ -14,9 +14,8 @@
     "prewatch": "pnpm run clean",
     "watch": "pnpm run prewatch && pnpm run rollup -- --watch",
     "rollup": "rollup -c rollup.config.js",
-    "preversion": "pnpm run lint",
+    "preversion": "pnpm run lint && pnpm run build",
     "version": "pnpm run preversion && pnpm run generate:all && git add .",
-    "prepare": "pnpm run build",
     "release": "np --no-cleanup --no-yarn --no-tests",
     "update:check": "pnpx npm-check-updates -x typescript-* --dep dev,prod",
     "update:commit": "pnpx npm-check-updates -u -x typescript-* --dep dev,prod && pnpm update && pnpm install"
