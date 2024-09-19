@@ -1,0 +1,8 @@
+{
+	"modules": {
+		"@wessberg/di": ["dist/esm/index"]
+	},
+	"preload": [
+		"@wessberg/di"
+	]
+}

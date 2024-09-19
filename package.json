@@ -84,6 +84,7 @@
   },
   "license": "MIT",
   "files": [
-    "dist/**/*.*"
+    "dist/**/*.*",
+    "manifest.json"
   ]
 }
