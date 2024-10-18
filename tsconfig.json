@@ -1,8 +1,6 @@
 {
-  "extends": "@wessberg/ts-config",
-  "compilerOptions": {
-    "outDir": "foo",
-    "declaration": true,
-    "noUnusedParameters": false
-  }
+	"extends": "./node_modules/@wessberg/ts-config/tsconfig.json",
+	"include": ["src/**/*.*", "test/**/*.*", "eslint.config.js", "sandhog.config.js"],
+	"exclude": ["dist/*.*"],
+	"compilerOptions": {}
 }

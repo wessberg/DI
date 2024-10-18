@@ -44,10 +44,6 @@ This library is a runtime dependency, but you need to transform your code with t
 
 ## Backers
 
-| <a href="https://usebubbles.com"><img alt="Bubbles" src="https://uploads-ssl.webflow.com/5d682047c28b217055606673/5e5360be16879c1d0dca6514_icon-thin-128x128%402x.png" height="70"   /></a> | <a href="https://github.com/cblanc"><img alt="Christopher Blanchard" src="https://avatars0.githubusercontent.com/u/2160685?s=400&v=4" height="70"   /></a> | <a href="https://github.com/ideal-postcodes"><img alt="Ideal Postcodes" src="https://avatars.githubusercontent.com/u/4996310?s=200&v=4" height="70"   /></a> | <a href="https://www.xerox.com"><img alt="Xerox" src="https://avatars.githubusercontent.com/u/9158512?s=200&v=4" height="70"   /></a> | <a href="https://changelog.me"><img alt="Trent Raymond" src="https://avatars.githubusercontent.com/u/1509616?v=4" height="70"   /></a> | <a href="https://scrubtheweb.com"><img alt="scrubtheweb" src="https://avatars.githubusercontent.com/u/41668218?v=4" height="70"   /></a> |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| [Bubbles](https://usebubbles.com)<br><strong>Twitter</strong>: [@usebubbles](https://twitter.com/usebubbles)                                                                                | [Christopher Blanchard](https://github.com/cblanc)                                                                                                         | [Ideal Postcodes](https://github.com/ideal-postcodes)                                                                                                        | [Xerox](https://www.xerox.com)                                                                                                        | [Trent Raymond](https://changelog.me)                                                                                                  | [scrubtheweb](https://scrubtheweb.com)                                                                                                   |
-
 ### Patreon
 
 <a href="https://www.patreon.com/bePatron?u=11315442"><img alt="Patrons on Patreon" src="https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.vercel.app%2Fapi%3Fusername%3Dwessberg%26type%3Dpatrons"  width="200"  /></a>
@@ -72,7 +68,6 @@ This library is a runtime dependency, but you need to transform your code with t
     - [Injecting instances of services into classes](#injecting-instances-of-services-into-classes)
     - [Getting instances directly from the `DIContainer`](#getting-instances-directly-from-the-dicontainer)
 - [Contributing](#contributing)
-- [Maintainers](#maintainers)
 - [FAQ](#faq)
   - [This is pure magic. How does it work?](#this-is-pure-magic-how-does-it-work)
   - [Is it possible to have multiple, scoped containers?](#is-it-possible-to-have-multiple-scoped-containers)
@@ -182,12 +177,6 @@ Do you want to contribute? Awesome! Please follow [these recommendations](./CONT
 
 <!-- SHADOW_SECTION_MAINTAINERS_START -->
 
-## Maintainers
-
-| <a href="mailto:frederikwessberg@hotmail.com"><img alt="Frederik Wessberg" src="https://avatars2.githubusercontent.com/u/20454213?s=460&v=4" height="70"   /></a>                                                                |
-| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [Frederik Wessberg](mailto:frederikwessberg@hotmail.com)<br><strong>Twitter</strong>: [@FredWessberg](https://twitter.com/FredWessberg)<br><strong>Github</strong>: [@wessberg](https://github.com/wessberg)<br>_Lead Developer_ |
-
 <!-- SHADOW_SECTION_MAINTAINERS_END -->
 
 <!-- SHADOW_SECTION_FAQ_START -->
@@ -208,6 +197,6 @@ Sure. You can instantiate as many as you want to, as long as you make sure the [
 
 ## License
 
-MIT © [Frederik Wessberg](mailto:frederikwessberg@hotmail.com) ([@FredWessberg](https://twitter.com/FredWessberg)) ([Website](https://github.com/wessberg))
+MIT ©
 
 <!-- SHADOW_SECTION_LICENSE_END -->

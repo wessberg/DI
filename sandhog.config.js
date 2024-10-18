@@ -1,12 +1,8 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
-// @ts-check
+import baseConfig from "@wessberg/ts-config/sandhog.config.js";
 
-/**
- * @type {import("helpertypes").PartialDeep<import("sandhog").SandhogConfig>}
- */
-const config = {
-  ...require("@wessberg/ts-config/sandhog.config.json"),
-  logo: {
+export default {
+	...baseConfig,
+	logo: {
     url: "https://raw.githubusercontent.com/wessberg/di/master/documentation/asset/di-logo.png",
     height: 150,
   },
@@ -16,4 +12,3 @@ const config = {
     }
   }
 };
-module.exports = config;
