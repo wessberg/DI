@@ -92,13 +92,12 @@ export class DIContainer implements IDIContainer {
 		if (options == null) {
 			throw new ReferenceError(`1 argument required, but only 0 present. ${DI_COMPILER_ERROR_HINT}`);
 		}
-		const instance = this.#constructInstance<T>(options);
 
-		if (instance == null) {
+		if (!this.has(options)) {
 			throw new InstantiationError(`The service wasn't found in the registry.`, {identifier: options.identifier});
 		}
 
-		return instance;
+		return this.#constructInstance<T>(options)!;
 	}
 
 	/**

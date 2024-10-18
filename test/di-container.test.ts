@@ -174,3 +174,16 @@ test(`Can construct services with class constructors. #2`, () => {
 	assert.deepEqual(cInstance.serviceB, bInstance);
 	assert.deepEqual(bInstance.serviceA, aInstance);
 });
+
+test(`Services that allow for nullable values can be constructed without exceptions. #1`, () => {
+	interface IServiceA {
+		foo: string;
+	}
+
+	type NullableServiceA = IServiceA | undefined;
+
+	const container = new DIContainer();
+
+	container.registerSingleton<NullableServiceA>(() => undefined, {identifier: "NullableServiceA"});
+	assert.doesNotThrow(() => container.get<NullableServiceA>({identifier: "NullableServiceA"}));
+});
