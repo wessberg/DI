@@ -1,3 +1,12 @@
+## [3.0.1](https://github.com/wessberg/di/compare/v3.0.0...v3.0.1) (2024-10-18)
+
+
+### Bug Fixes
+
+* allow nullable service registrations ([0383035](https://github.com/wessberg/di/commit/0383035117947e9a8b8f397b28294e81dd088aff))
+
+
+
 # [3.0.0](https://github.com/wessberg/di/compare/v2.1.0...v3.0.0) (2024-10-18)
 
 
