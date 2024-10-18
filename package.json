@@ -1,6 +1,6 @@
 {
 	"name": "@wessberg/di",
-	"version": "2.1.0",
+	"version": "3.0.0",
 	"description": "A compile-time powered Dependency-Injection container for Typescript that holds services and can produce instances of them as required.",
 	"scripts": {
 		"generate:sandhog": "sandhog all --yes",

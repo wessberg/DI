@@ -1,3 +1,13 @@
+# [3.0.0](https://github.com/wessberg/di/compare/v2.1.0...v3.0.0) (2024-10-18)
+
+
+### Features
+
+* add new sponsor: scrubtheweb. Run Prettier ([d6760fb](https://github.com/wessberg/di/commit/d6760fb2a3748a6861c1c40790201cec306b3ee9))
+* migrate to TypeScript 5.6. Don't swallow errors thrown during class instance construction. Refactoring. Use modern EcmaScript ([2830e9d](https://github.com/wessberg/di/commit/2830e9d25f5fcf6cb45a76e665dc1970d838926b))
+
+
+
 # [2.1.0](https://github.com/wessberg/di/compare/5903e8520730951484bddbeac1759e4a297e9e8c...v2.1.0) (2022-04-07)
 
 
