@@ -213,7 +213,7 @@ export class DIContainer implements IDIContainer {
 					parentChain: nextParentChain
 				});
 
-				if (constructedInstance == null) {
+				if (constructedInstance == null && !this.has({identifier: dep})) {
 					throw new InstantiationError(`Dependency '${dep}' was not found in the service registry.`, {identifier: me.identifier, parentChain: nextParentChain});
 				}
 

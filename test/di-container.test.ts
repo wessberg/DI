@@ -187,3 +187,26 @@ test(`Services that allow for nullable values can be constructed without excepti
 	container.registerSingleton<NullableServiceA>(() => undefined, {identifier: "NullableServiceA"});
 	assert.doesNotThrow(() => container.get<NullableServiceA>({identifier: "NullableServiceA"}));
 });
+
+test(`Services that allow for nullable values can be constructed without exceptions. #2`, () => {
+	interface IServiceA {
+		foo: string;
+	}
+
+	type NullableServiceA = IServiceA | undefined;
+
+	class ServiceB {
+		static get [CONSTRUCTOR_ARGUMENTS_SYMBOL]() {
+			return ["NullableServiceA"];
+		}
+
+		constructor(public serviceA: NullableServiceA) {}
+	}
+
+	const container = new DIContainer();
+
+	container.registerSingleton<NullableServiceA>(() => undefined, {identifier: "NullableServiceA"});
+	container.registerSingleton<ServiceB>(undefined, {identifier: "ServiceB", implementation: ServiceB});
+
+	assert.doesNotThrow(() => container.get<ServiceB>({identifier: "ServiceB"}));
+});
